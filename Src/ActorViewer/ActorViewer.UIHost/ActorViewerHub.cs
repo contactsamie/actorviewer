@@ -1,4 +1,5 @@
-﻿using Akka.Actor;
+﻿using ActorViewer.ActorViewerMessages;
+using Akka.Actor;
 using Microsoft.AspNet.SignalR;
 using NLog;
 
@@ -6,18 +7,17 @@ namespace ActorViewer.UIHost
 {
     public class ActorViewerHub : Hub
     {
-        private IActorRef SignalRNotificationsActorRef { set; get; }
+        private IActorRef ActorViewerActorRef { set; get; }
+     
 
-        public ActorViewerHub(IActorRef signalRNotificationsActorRef)
+        public ActorViewerHub(IActorRef actorViewerActorRef)
         {
-            SignalRNotificationsActorRef = signalRNotificationsActorRef;
+            ActorViewerActorRef = actorViewerActorRef;
         }
 
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
-        public void PerformOperation(string operation)
+        public void QueryDebugUpdates(QueryDebugUpdatesMessage operation)
         {
-            SignalRNotificationsActorRef.Tell(operation);
+            ActorViewerActorRef.Tell(operation);
         }
     }
 }

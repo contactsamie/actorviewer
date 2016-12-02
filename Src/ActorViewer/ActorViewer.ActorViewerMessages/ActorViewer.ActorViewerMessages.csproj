@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActorDebugUpdateMessage.cs" />
     <Compile Include="IRequestMessage.cs" />
+    <Compile Include="MessageNature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryDebugUpdatesCompletedMessage.cs" />
+    <Compile Include="QueryDebugUpdatesMessage.cs" />
     <Compile Include="SubScribeToNotificationMessage.cs" />
     <Compile Include="UnSubscribedNotificationMessage.cs" />
   </ItemGroup>

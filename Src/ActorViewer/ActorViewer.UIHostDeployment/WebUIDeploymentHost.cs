@@ -1,7 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.IO;
-using ActorViewer.Actors;
+﻿using ActorViewer.Actors;
 using ActorViewer.ActorSystemFactoryLib;
 using ActorViewer.UIHost;
 using Akka.Actor;
@@ -13,6 +10,9 @@ using Microsoft.Owin.Hosting;
 using Microsoft.Owin.StaticFiles;
 using NLog;
 using Owin;
+using System;
+using System.Configuration;
+using System.IO;
 
 namespace ActorViewer.UIHostDeployment
 {
@@ -26,47 +26,42 @@ namespace ActorViewer.UIHostDeployment
         private ActorSystemFactory ActorSystemFactory { set; get; }
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public void Start(string serverEndPoint = null, string serverActorSystemName = null,ActorSystem serverActorSystem = null, string serverActorSystemConfig = null)
+        public void Start(string serverEndPoint = null, string serverActorSystemName = null, ActorSystem serverActorSystem = null, string serverActorSystemConfig = null)
         {
             try
             {
                 ActorSystemFactory.CreateOrSetUpActorSystem(serverActorSystemName: serverActorSystemName, actorSystem: serverActorSystem, actorSystemConfig: serverActorSystemConfig);
-              
-                var signalRNotificationsActorRef = ActorSystemFactory.ActorViewerActorSystem.ActorOf(Props.Create(() => new ActorViewerActor(new SignalRNotificationService())), typeof(ActorViewerActor).Name);
-                
+
+                var actorViewerActorRef = ActorSystemFactory.ActorViewerActorSystem.ActorOf(Props.Create(() => new ActorViewerActor(new SignalRNotificationService())), typeof(ActorViewerActor).Name);
+
                 Log.Debug("Starting ActorViewer service ...");
-                serverEndPoint = serverEndPoint ??  ConfigurationManager.AppSettings["ServerEndPoint"];
+                serverEndPoint = serverEndPoint ?? ConfigurationManager.AppSettings["ServerEndPoint"];
 
                 if (!string.IsNullOrEmpty(serverEndPoint))
                 {
                     OwinRef = WebApp.Start(serverEndPoint, (appBuilder) =>
                     {
-                        if (Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/site"))
+                        if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/site")) return;
+                        var builder = new ContainerBuilder();
+                        builder.Register(c => actorViewerActorRef).ExternallyOwned();
+                        // Register your SignalR hubs.
+                        builder.RegisterType<ActorViewerHub>().ExternallyOwned();
+
+                        var container = builder.Build();
+                        GlobalHost.DependencyResolver = new AutofacDependencyResolver(container);
+                        appBuilder.UseAutofacMiddleware(container);
+
+                        appBuilder.MapSignalR();
+
+                        var fileSystem = new PhysicalFileSystem(AppDomain.CurrentDomain.BaseDirectory + "/site");
+                        var options = new FileServerOptions
                         {
-                            var builder = new ContainerBuilder();
-                            builder.Register(c => signalRNotificationsActorRef).ExternallyOwned();
-                            // Register your SignalR hubs.
-                            builder.RegisterType<ActorViewerHub>().ExternallyOwned();
+                            EnableDirectoryBrowsing = true,
+                            FileSystem = fileSystem,
+                            EnableDefaultFiles = true
+                        };
 
-                            var container = builder.Build();
-                            //var config = new HubConfiguration {Resolver = new AutofacDependencyResolver(container)};
-                            GlobalHost.DependencyResolver = new AutofacDependencyResolver(container);
-                            appBuilder.UseAutofacMiddleware(container);
-
-                            appBuilder.MapSignalR();
-
-                            var fileSystem = new PhysicalFileSystem(AppDomain.CurrentDomain.BaseDirectory + "/site");
-                            var options = new FileServerOptions
-                            {
-                                EnableDirectoryBrowsing = true,
-                                FileSystem = fileSystem,
-                                EnableDefaultFiles = true
-                            };
-
-                            appBuilder.UseFileServer(options);
-                        }
-
-                        //  ActorViewerSignalRContext.Push();
+                        appBuilder.UseFileServer(options);
                     });
                 }
 

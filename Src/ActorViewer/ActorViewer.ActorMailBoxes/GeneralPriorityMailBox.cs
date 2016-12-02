@@ -1,4 +1,5 @@
-﻿using Akka.Configuration;
+﻿using ActorViewer.ActorViewerMessages;
+using Akka.Configuration;
 using Akka.Dispatch;
 
 namespace ActorViewer.ActorMailBoxes
@@ -7,7 +8,7 @@ namespace ActorViewer.ActorMailBoxes
     {
         protected override int PriorityGenerator(object message)
         {
-            return 0;
+            return message is QueryDebugUpdatesMessage?0:1;
         }
 
         public GeneralPriorityMailBox(Akka.Actor.Settings settings, Config config) : base(settings, config)

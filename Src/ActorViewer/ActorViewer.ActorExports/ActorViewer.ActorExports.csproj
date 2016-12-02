@@ -93,6 +93,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ActorViewer.ActorViewerMessages\ActorViewer.ActorViewerMessages.csproj">
+      <Project>{988E35E5-C746-40B9-A92E-B8D63EE6124E}</Project>
+      <Name>ActorViewer.ActorViewerMessages</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

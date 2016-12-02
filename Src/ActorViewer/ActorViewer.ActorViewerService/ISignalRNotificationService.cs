@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ActorViewer.ActorViewerMessages;
 
 namespace ActorViewer.ActorViewerService
 {
     public interface ISignalRNotificationService
     {
-        void SendSomething(double speed);
+        void SendDebugUpdates(QueryDebugUpdatesCompletedMessage debugUpdates);
+
+        void SendLastUpdate(ActorDebugUpdateMessage lattestUpdate);
     }
 }

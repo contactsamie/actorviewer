@@ -14,7 +14,7 @@ namespace ActorViewer.TestActorSystem
             });
 
             ActorRefs.JohnChildActor = Context.CreateActorInDebugMode<JohnChildActor>();
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), ActorRefs.MaryActor, DateTime.Now.ToLongDateString(), Self);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(2), ActorRefs.MaryActor, DateTime.Now.ToLongDateString(), Self);
         }
     }
 
@@ -27,7 +27,7 @@ namespace ActorViewer.TestActorSystem
                 Console.WriteLine("REAL " + GetType().Name + " received a message : " + message);
             });
 
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(1), ActorRefs.MaryChildActor, DateTime.Now.ToLongDateString(), Self);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(100), ActorRefs.MaryChildActor, DateTime.Now.ToLongDateString(), Self);
         }
     }
 
@@ -54,7 +54,7 @@ namespace ActorViewer.TestActorSystem
                 Console.WriteLine("REAL " + GetType().Name + " received a message : " + message);
             });
 
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(1), ActorRefs.JohnChildActor, DateTime.Now.ToLongDateString(), Self);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(100), ActorRefs.JohnChildActor, DateTime.Now.ToLongDateString(), Self);
         }
     }
 }

@@ -7,9 +7,11 @@
     Install-Package Akka.Remote
 
 
+
+
+Install-Package Akka.DI.AutoFac -version 1.0.8
    Install-Package Topshelf -version 4.0.3
  Install-Package Topshelf.NLog
- Install-Package Akka.DI.AutoFac -version 1.0.8
 
     Install-Package Owin
 	Install-Package Autofac -version 4.2.0

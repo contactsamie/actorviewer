@@ -1,4 +1,5 @@
-﻿using Akka.Actor;
+﻿using ActorViewer.ActorViewerMessages;
+using Akka.Actor;
 using System;
 using System.Configuration;
 
@@ -20,37 +21,45 @@ namespace ActorViewer.ActorExports
             MessageLogger = messageLogger;
             WatchedActor = Context.ActorOf(actorProps, detDebugModeActorName);
             Context.Watch(WatchedActor);
-
-            SendMessageUpdate(GetType().Name + " has now been created ");
+            SendMessageUpdate(GetLoadToSend(GetType().Name, MessageNature.Initialization, GetType().Name + " actor has been constructed"));
         }
 
-        private void SendMessageUpdate(string message)
+        private void SendMessageUpdate(ActorDebugUpdateMessage message)
         {
-            string m=null;
-            try
-            {
-                 m = "From " + Sender.Path.ToStringWithUid() + " To " + Self.Path.ToStringWithUid() + " : " + message;
-            }
-            catch (Exception)
-            {
-                
-            }
-            MessageLogger?.Invoke(m?? message);
-            RemoteActorSelection?.Tell(m?? message);
+            MessageLogger?.Invoke(message);
+            RemoteActorSelection?.Tell(message);
         }
 
         protected override void OnReceive(object message)
         {
-            SendMessageUpdate(GetType().Name + " received " + message.GetType().Name + " from " + Sender.Path.ToStringWithUid());
+            var load = GetLoadToSend(message, MessageNature.Received, " received " + message.GetType().Name + " from " + Sender.Path.ToStringWithUid());
+
+            SendMessageUpdate(load);
+
             if (message is Terminated)
             {
-                SendMessageUpdate(GetType().Name + " is now going to die ");
                 Self.GracefulStop(TimeSpan.FromSeconds(1));
             }
             else
             {
                 WatchedActor.Forward(message);
             }
+        }
+
+        private ActorDebugUpdateMessage GetLoadToSend(object message, MessageNature messageNature, string extraInfo = "")
+        {
+            var load = new ActorDebugUpdateMessage(
+                Context.System.Name
+                , Sender?.Path?.ToStringWithAddress()
+                , Sender?.Path?.ToStringWithUid()
+                , Self.Path.ToStringWithAddress()
+                , Self.Path.ToStringWithUid()
+                , message.GetType().Name
+                , message
+                , message.GetType().FullName
+                , extraInfo
+                , messageNature);
+            return load;
         }
     }
 }
