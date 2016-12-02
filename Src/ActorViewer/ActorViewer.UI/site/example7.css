@@ -9,7 +9,7 @@ abbr,acronym { border:0; }
 
 body { background: #fff;  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; }
 /* optional Container STYLES */
-.chart { height: 600px; width: 900px; margin: 5px; margin: 15px auto; border: 3px solid #DDD; border-radius: 3px; }
+.chart { height: 1000px; width: 100%; margin: 5px; margin: 15px auto; border: 3px solid #DDD; border-radius: 3px; }
 
 .tennis-draw {
     font-size: 10px;

@@ -9,12 +9,12 @@ namespace ActorViewer.UIHost
 
         public void SendDebugUpdates(QueryDebugUpdatesCompletedMessage debugUpdates)
         {
-            GlobalHost.ConnectionManager.GetHubContext<ActorViewerHub>().Clients.All.messageSpeed(debugUpdates);
+            GlobalHost.ConnectionManager.GetHubContext<ActorViewerHub>().Clients.All.updateLog(debugUpdates);
         }
 
         public void SendLastUpdate(ActorDebugUpdateMessage lattestUpdate)
         {
-            GlobalHost.ConnectionManager.GetHubContext<ActorViewerHub>().Clients.All.messageSpeed(lattestUpdate);
+            GlobalHost.ConnectionManager.GetHubContext<ActorViewerHub>().Clients.All.updateLog(lattestUpdate);
         }
     }
 }

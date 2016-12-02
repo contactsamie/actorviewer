@@ -33,14 +33,15 @@ namespace ActorViewer.Actors
             Receive<QueryDebugUpdatesMessage>(message =>
             {
                 var resultSet =
-                    ActorDebugUpdateMessages.Where(x => x.ReceivedOn >= message.From && x.ReceivedOn <= message.To)
+                    ActorDebugUpdateMessages/*.Where(x => x.ReceivedOn >= message.From && x.ReceivedOn <= message.To)*/
                         .Skip(message.Skip)
                         .Take(message.Take)
                         .ToList();
                 Sender.Tell(new QueryDebugUpdatesCompletedMessage(resultSet));
+                SignalRNotificationService.SendDebugUpdates(new QueryDebugUpdatesCompletedMessage(resultSet));
             });
             ReceiveAny(Console.WriteLine);
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), Self, new UpdateClients(), Self);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(3), Self, new UpdateClients(), Self);
         }
     }
 }
