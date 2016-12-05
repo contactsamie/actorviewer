@@ -13,6 +13,7 @@ namespace ActorViewer.Actors
         public readonly ILoggingAdapter Logger = Context.GetLogger();
         private ISignalRNotificationService SignalRNotificationService { set; get; }
         public List<ActorDebugUpdateMessage> ActorDebugUpdateMessages { set; get; }
+        public Dictionary<string,ActorDebugUpdateMessage> UniqueMessages=new Dictionary<string, ActorDebugUpdateMessage>();
         public ActorViewerActor(ISignalRNotificationService signalRNotificationService)
         {
             ActorDebugUpdateMessages = new List<ActorDebugUpdateMessage>();
@@ -20,6 +21,8 @@ namespace ActorViewer.Actors
             Receive<ActorDebugUpdateMessage>(message =>
             {
                 ActorDebugUpdateMessages.Add(message);
+                UniqueMessages[message.SourceActor] = message;
+                UniqueMessages[message.DestinationActor] = message;
             });
             Receive<UpdateClients>(_ =>
             {
@@ -33,7 +36,8 @@ namespace ActorViewer.Actors
             Receive<QueryDebugUpdatesMessage>(message =>
             {
                 var resultSet =
-                    ActorDebugUpdateMessages/*.Where(x => x.ReceivedOn >= message.From && x.ReceivedOn <= message.To)*/
+                   // ActorDebugUpdateMessages/*.Where(x => x.ReceivedOn >= message.From && x.ReceivedOn <= message.To)*/
+                   UniqueMessages.Select(x=>x.Value)
                         .Skip(message.Skip)
                         .Take(message.Take)
                         .ToList();

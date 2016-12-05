@@ -1,5 +1,35 @@
-﻿
+﻿var merge = function (x, y) {
 
+    var res = {
+        children: []
+    };
+    var xHas = x.children && x.children.length;
+    var yHas = y.children && y.children.length;
+    if ((!xHas && yHas) || !yHas && xHas) {
+        x.children = x.children || [];
+        y.children = y.children || [];
+
+        for (q in x.children) {
+            for (r in y.children) {
+                if (x.children[q].text.name == y.children[r].text.name) {
+                    console.log(x.children[q].text.name);
+                } else {
+                    res.children.push(y.children[r]);
+                }
+            }
+        }
+
+
+    }
+
+    //res=$.extend({},x,y);
+    console.log(res);
+    return res;
+};
+
+
+
+var d = merge(c, b);
 var app = angular.module("InventoryServiceApp", [
     "ngRoute", "jsonFormatter"
 ]);
@@ -194,17 +224,14 @@ angular.module("InventoryServiceApp").controller("ActorsCtrl", function ($scope,
                               lastData = nextData;
                           }
                           node.children[0] = node.children[0] || {};
-                            var newdata = $.extend({}, lastData, node.children[0]);
-                            node.children[0]=newdata;
-
-                         
+                            var newdata = extend( lastData, node.children[0]);
+                          node.children[0] = newdata;
                         }
                     }
                    // $scope.model.incomingMessages = response;
 
 
-
-
+                   // node.children = arrayUnique(node.children);
                     new Treant(tree_structure(node));
                 } else {
                 }
