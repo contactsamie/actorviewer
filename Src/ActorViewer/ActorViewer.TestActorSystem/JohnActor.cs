@@ -14,7 +14,7 @@ namespace ActorViewer.TestActorSystem
             });
 
             ActorRefs.JohnChildActor = Context.CreateActorInDebugMode<JohnChildActor>();
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3), ActorRefs.MaryActor, DateTime.Now.ToLongDateString(), Self);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(3), ActorRefs.MaryActor, DateTime.Now.ToLongDateString(), Self);
         }
     }
 
@@ -27,7 +27,7 @@ namespace ActorViewer.TestActorSystem
                 Console.WriteLine("REAL " + GetType().Name + " received a message : " + message);
             });
 
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3), ActorRefs.MaryChildActor, DateTime.Now.ToLongDateString(), Self);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(12), TimeSpan.FromSeconds(3), ActorRefs.MaryChildActor, DateTime.Now.ToLongDateString(), Self);
         }
     }
 
@@ -41,7 +41,7 @@ namespace ActorViewer.TestActorSystem
             });
 
             ActorRefs.MaryChildActor = Context.CreateActorInDebugMode<MaryChildActor>();
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3), ActorRefs.JohnActor, DateTime.Now.ToLongDateString(), Self);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(3), ActorRefs.JohnActor, DateTime.Now.ToLongDateString(), Self);
         }
     }
 
@@ -54,7 +54,7 @@ namespace ActorViewer.TestActorSystem
                 Console.WriteLine("REAL " + GetType().Name + " received a message : " + message);
             });
 
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3), ActorRefs.JohnChildActor, DateTime.Now.ToLongDateString(), Self);
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(12), TimeSpan.FromSeconds(3), ActorRefs.JohnChildActor, DateTime.Now.ToLongDateString(), Self);
         }
     }
 }

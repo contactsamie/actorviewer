@@ -1,4 +1,5 @@
-﻿using ActorViewer.ActorViewerMessages;
+﻿
+using ActorViewer.ActorExports;
 using Akka.Configuration;
 using Akka.Dispatch;
 

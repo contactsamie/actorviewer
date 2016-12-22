@@ -18,8 +18,6 @@
                 }
             }
         }
-
-
     }
 
     //res=$.extend({},x,y);
@@ -29,7 +27,7 @@
 
 
 
-var d = merge(c, b);
+
 var app = angular.module("InventoryServiceApp", [
     "ngRoute", "jsonFormatter"
 ]);
@@ -170,9 +168,9 @@ angular.module("InventoryServiceApp").controller("ActorsCtrl", function ($scope,
         return {
             chart: {
                 container: "#OrganiseChart6",
-                levelSeparation: 20,
-                siblingSeparation: 15,
-                subTeeSeparation: 15,
+                levelSeparation: 30,
+                siblingSeparation: 30,
+                subTeeSeparation: 30,
                 rootOrientation: "EAST",
 
                 node: {
@@ -191,54 +189,114 @@ angular.module("InventoryServiceApp").controller("ActorsCtrl", function ($scope,
             nodeStructure: n
         };
     };
+    var msges = [];
     hub.client("updateLog",
         function (response) {
-            $timeout(function () {
+            $timeout(function () {     });
 
+            response.ActorDebugUpdateMessages = response.ActorDebugUpdateMessages || [response];
+            msges = msges.concat(response.ActorDebugUpdateMessages);
+            msges.reverse();
                 if (response.ActorDebugUpdateMessages) {
+                    function cloneObject(obj) {
+                        var clone = Array.isArray(obj) ? [] : {};
+                        for (var i in obj) {
+                            if (typeof (obj[i]) == "object" && obj[i] != null) {
+                                if (i === "children") {
+                                    obj[i] = $.map(obj[i], function (value, index) {
+                                        return [value];
+                                    });
+                                }
+                                clone[i] = cloneObject(obj[i]);
+                            } else {
+                                clone[i] = obj[i];
 
-                    
-
-                    for (var key in response.ActorDebugUpdateMessages) {
-                        // skip loop if the property is from prototype
-                        if (!response.ActorDebugUpdateMessages.hasOwnProperty(key)) continue;
-
-                        var obj = response.ActorDebugUpdateMessages[key];
-                        for (var prop in obj) {
-                            // skip loop if the property is from prototype
-                            if (!obj.hasOwnProperty(prop)) continue;
-
-                          var destinationActor=  obj.DestinationActor.replace("akka://", "");
-                          var destinationActorPath = destinationActor.split('/');
-                         
-                          var arrayLength = destinationActorPath.length;
-                          var lastData = { text: { name: destinationActorPath[arrayLength - 1] } };
-                          var nextData = {};
-                          for (var i = arrayLength - 1; i > 0; i--) {
-                              nextData = {};
-                              nextData.text = {
-                                  name: destinationActorPath[i - 1]
-                              };
-                              nextData.children = [];
-                              nextData.children.push(JSON.parse(JSON.stringify(lastData)));
-                              lastData = nextData;
-                          }
-                          node.children[0] = node.children[0] || {};
-                            var newdata = extend( lastData, node.children[0]);
-                          node.children[0] = newdata;
+                            }
                         }
+                        return clone;
                     }
-                   // $scope.model.incomingMessages = response;
 
+                    var arr = [] //your array;
+                    var tree = {};
 
-                   // node.children = arrayUnique(node.children);
-                    new Treant(tree_structure(node));
+                    function addnode(obj) {
+                        var splitpath = obj.DestinationActor.replace("akka://", "akka/").replace(/^\/|\/$/g, "").split('/');
+                        var dest = obj.SourceActor.replace("akka://", "akka/").replace(/^\/|\/$/g, "").split('/');
+                        var ptr = tree;
+                        var dateOn = new Date(obj.ReceivedOn);
+                        for (i = 0; i < splitpath.length; i++) {
+                            node = {
+                                text: {
+                                    name: {
+                                        val: splitpath[i]
+                                    },
+                                    title: obj.MessageNature + " " + obj.MessageType + " from " + dest[dest.length - 1] + " " + dateOn.getHours() + ":" + dateOn.getMinutes() + ":" + dateOn.getSeconds() + ":" + dateOn.getMilliseconds()
+                                },
+                                HTMLclass: "winner",
+                                HTMLid: splitpath[i],
+                                link: {
+                                    href: "http://www.google.com",
+                                    target: "_blank"
+                                }
+                            };
+                            if (i == splitpath.length - 1) {
+                                node.size = obj.size;
+                                node.type = obj.type;
+                            }
+                            ptr[splitpath[i]] = ptr[splitpath[i]] || node;
+                            ptr[splitpath[i]].children = ptr[splitpath[i]].children || {};
+                            ptr = ptr[splitpath[i]].children;
+                        }
+                        //if (!stop) {
+                        //    obj.SourceActor = obj.DestinationActor;
+                        //    addnode(obj, true);
+                        //}
+
+                    }
+                    msges.map(addnode);
+                    var prevdata = cloneObject(tree);
+                    prevdata.akka = prevdata.akka || {};
+               
+                    new Treant({
+                        chart: {
+                            container: "#OrganiseChart6",
+                            levelSeparation: 20,
+                            siblingSeparation: 20,
+                            subTeeSeparation: 20,
+                            rootOrientation: "WEST",
+
+                            node: {
+                                HTMLclass: "tennis-draw",
+                                drawLineThrough: true
+                            },
+                            connectors: {
+                                type: "straight",
+                                style: {
+                                    "stroke-width": 2,
+                                    "stroke": "#ccc"
+                                }
+                            }
+                        },
+                        nodeStructure: {
+                            text: {
+                                name: {
+                                    val: "Root"
+                                }
+                            },
+                            HTMLclass: "winner",
+                            children: [{
+                                text: prevdata.akka.text,
+                                children: prevdata.akka.children,
+                                HTMLclass: "winner"
+                            }]
+                        }
+                    });
                 } else {
                 }
                 
                
                 console.log(response);
-            });
+       
         });
   
     $scope.serverNotificationMessages = "";

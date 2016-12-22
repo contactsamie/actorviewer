@@ -57,6 +57,10 @@
       <HintPath>..\packages\Akka.Remote.1.1.2\lib\net45\Akka.Remote.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Akka.Serialization.Wire, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Akka.Serialization.Wire.1.1.2.30-beta\lib\net45\Akka.Serialization.Wire.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Autofac, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
@@ -166,6 +170,10 @@
       <HintPath>..\packages\Topshelf.NLog.4.0.3\lib\net452\Topshelf.NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Wire, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Wire.0.7.1\lib\net45\Wire.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -188,10 +196,6 @@
     <ProjectReference Include="..\ActorViewer.Actors\ActorViewer.Actors.csproj">
       <Project>{678C484A-C0E7-44DF-88EC-6E6521C7BDB7}</Project>
       <Name>ActorViewer.Actors</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ActorViewer.ActorViewerMessages\ActorViewer.ActorViewerMessages.csproj">
-      <Project>{988e35e5-c746-40b9-a92e-b8d63ee6124e}</Project>
-      <Name>ActorViewer.ActorViewerMessages</Name>
     </ProjectReference>
     <ProjectReference Include="..\ActorViewer.ActorViewerService\ActorViewer.ActorViewerService.csproj">
       <Project>{12771123-DC31-4777-B388-C094C482B0F1}</Project>

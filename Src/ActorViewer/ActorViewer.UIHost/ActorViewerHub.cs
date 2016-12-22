@@ -1,5 +1,6 @@
 ﻿using System;
-using ActorViewer.ActorViewerMessages;
+using ActorViewer.ActorExports;
+
 using Akka.Actor;
 using Microsoft.AspNet.SignalR;
 using NLog;

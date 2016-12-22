@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorViewer.Actors", "Actor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorViewer.ActorViewerService", "ActorViewer.ActorViewerService\ActorViewer.ActorViewerService.csproj", "{12771123-DC31-4777-B388-C094C482B0F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorViewer.ActorViewerMessages", "ActorViewer.ActorViewerMessages\ActorViewer.ActorViewerMessages.csproj", "{988E35E5-C746-40B9-A92E-B8D63EE6124E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorViewer.UI", "ActorViewer.UI\ActorViewer.UI.csproj", "{5E789CEE-F236-429B-AFDF-BFE180970835}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorViewer.ActorExports", "ActorViewer.ActorExports\ActorViewer.ActorExports.csproj", "{CE287FC7-24A2-4EA0-99DD-A7572E51B976}"
@@ -52,10 +50,6 @@ Global
 		{12771123-DC31-4777-B388-C094C482B0F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12771123-DC31-4777-B388-C094C482B0F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12771123-DC31-4777-B388-C094C482B0F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{988E35E5-C746-40B9-A92E-B8D63EE6124E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{988E35E5-C746-40B9-A92E-B8D63EE6124E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{988E35E5-C746-40B9-A92E-B8D63EE6124E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{988E35E5-C746-40B9-A92E-B8D63EE6124E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E789CEE-F236-429B-AFDF-BFE180970835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E789CEE-F236-429B-AFDF-BFE180970835}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E789CEE-F236-429B-AFDF-BFE180970835}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,10 +1,12 @@
-﻿using ActorViewer.ActorViewerMessages;
+﻿
 using ActorViewer.ActorViewerService;
 using Akka.Actor;
 using Akka.Event;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using ActorViewer.ActorExports;
 
 namespace ActorViewer.Actors
 {
@@ -13,7 +15,7 @@ namespace ActorViewer.Actors
         public readonly ILoggingAdapter Logger = Context.GetLogger();
         private ISignalRNotificationService SignalRNotificationService { set; get; }
         public List<ActorDebugUpdateMessage> ActorDebugUpdateMessages { set; get; }
-        public Dictionary<string,ActorDebugUpdateMessage> UniqueMessages=new Dictionary<string, ActorDebugUpdateMessage>();
+        public ConcurrentDictionary<string, ActorDebugUpdateMessage> UniqueMessages =new ConcurrentDictionary<string, ActorDebugUpdateMessage>();
         public ActorViewerActor(ISignalRNotificationService signalRNotificationService)
         {
             ActorDebugUpdateMessages = new List<ActorDebugUpdateMessage>();
